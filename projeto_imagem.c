@@ -12,6 +12,28 @@ void aumentarBrilho(int** original, int linhas, int colunas, int maxValor)
 		}
 	}
 }
+
+void diminuirBrilho(int** original, int linhas, int colunas, int maxValor)
+{	int l, c;
+	for(l=0; l<linhas; l++)
+	{	for(c=0; c<colunas; c++)
+		{	original[l][c] = (int)(original[l][c] * 0.8);
+			if(original[l][c] > maxValor)
+				original[l][c] = maxValor;
+		}
+	}
+}
+void girar(int** original, int linhas, int colunas){
+	int l,c;
+	int aux[linhas][colunas];
+	for(l=linhas-1;  ){
+		
+	}
+	
+	
+}
+
+
 void aumentarContraste(int** original, int linhas, int colunas, int maxValor)
 {	int l, c;
 	for(l=0; l<linhas; l++)
@@ -31,10 +53,22 @@ void aumentarContraste(int** original, int linhas, int colunas, int maxValor)
 	}
 }
 
+void diminuirContraste(int** original, int linhas, int colunas, int maxValor)
+{	int l, c;
+	for(l=0; l<linhas; l++)
+	{	for(c=0; c<colunas; c++)
+		{	double pixel = original[l][c]/255.0;
+			double novo_pixel = 1.0 / (1.0 + exp(-(2.0 * pixel - 1.0)));
+			original[l][c] = (int) 255* novo_pixel;
+		
+		}
+	}
+}
+
 void borrar(int** original, int linhas, int colunas, int tamanhoBorrao)
 {	int l, c;
 	/*
-		Aqui vocês terão de colocar seus códigos
+		completar ainda
 	*/
 }
 
@@ -76,6 +110,8 @@ int** lerImagem(char * nomeArquivo, int *pLinhas, int *pColunas, int *pMaxValor)
 	return mat;
 }
 
+
+
 void escreverImagem(char * nomeArquivo, int ** mat, int linhas, int colunas, int maxValor)
 {	FILE *fp;
 	fp = fopen(nomeArquivo,"w");
@@ -105,13 +141,13 @@ void escreverImagem(char * nomeArquivo, int ** mat, int linhas, int colunas, int
 }
 
 int main(int argc, char * argv[])
-{	char opcao[10]="0";
+{	char opcao[11]="0";
 	int linhas=0, colunas=0, maxValor=0, **mat=NULL;
 	int tamanhoBorrao = 8;
 	char nomeArquivo[100]="";
 	char nomeArquivoLeitura[100]="";
 	char nomeArquivoEscrita[100]="";
-	while(opcao[0] != '9')
+	while(opcao[0] != '10')
 	{	printf("\n\nMini-photoshop\n\n");
 		printf("1) Ler imagem\n");	
 		printf("2) Gravar imagem\n");	
@@ -121,7 +157,8 @@ int main(int argc, char * argv[])
 		printf("6) Diminuir contraste\n");
 		printf("7) Desfocar\n");
 		printf("8) Fazer moldura\n");
-		printf("9) Sair\n");
+		printf("9) Girar\n");
+		printf("10) Sair\n");
 		printf("\nEntre a opcao desejada: ");	
 		fgets(opcao, 10, stdin);
 		switch(opcao[0])
@@ -143,22 +180,23 @@ int main(int argc, char * argv[])
 				aumentarBrilho(mat, linhas, colunas, maxValor);
 				break;
 			case '4':
-				//diminuirBrilho(mat, linhas, colunas, maxValor);
+				diminuirBrilho(mat, linhas, colunas, maxValor);
 				break;
 			case '5':
 				aumentarContraste(mat, linhas, colunas, maxValor);
 				break;
 			case '6':
-				//diminuirContraste(mat, linhas, colunas, maxValor);
+				diminuirContraste(mat, linhas, colunas, maxValor);
 				break;
 			case '7':
 				borrar(mat, linhas, colunas, tamanhoBorrao);		
 				break;
 			case '8':
-				//moldura(mat, linhas, colunas, maxValor);
+				moldura(mat, linhas, colunas, maxValor);
 				break;
+			case '9':
+				girar(mat, linhas, colunas);
 		}
 	}
 	return 0;
 }
-
